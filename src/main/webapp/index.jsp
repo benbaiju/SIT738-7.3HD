@@ -1,0 +1,1 @@
+<% response.sendRedirect("/FinSight-Vulnerable/login"); %>

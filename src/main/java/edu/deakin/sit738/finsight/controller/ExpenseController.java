@@ -1,0 +1,78 @@
+package edu.deakin.sit738.finsight.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import edu.deakin.sit738.finsight.entity.Expense;
+import edu.deakin.sit738.finsight.service.ExpenseService;
+
+@Controller
+public class ExpenseController {
+
+    @Autowired
+    private ExpenseService expenseService;
+
+    @GetMapping("/expenses")
+    public String showExpenses(
+            @RequestParam("userId") int userId,
+            Model model) {
+
+        List<Expense> expenses =
+                expenseService.getExpensesByUserId(userId);
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("expenses", expenses);
+
+        return "expenses";
+    }
+
+    @PostMapping("/expenses/add")
+    public String addExpense(
+            @RequestParam("userId") int userId,
+            @RequestParam("description") String description,
+            @RequestParam("category") String category,
+            @RequestParam("amount") double amount) {
+
+        Expense expense = new Expense();
+
+        expense.setUserId(userId);
+        expense.setDescription(description);
+        expense.setCategory(category);
+        expense.setAmount(amount);
+
+        expenseService.saveExpense(expense);
+
+        return "redirect:/expenses?userId=" + userId;
+    }
+
+    @PostMapping("/expenses/delete")
+    public String deleteExpense(
+            @RequestParam("id") int id,
+            @RequestParam("userId") int userId) {
+
+        expenseService.deleteExpense(id);
+
+        return "redirect:/expenses?userId=" + userId;
+    }
+
+    @PostMapping("/expenses/search")
+    public String searchExpenses(
+            @RequestParam("userId") int userId,
+            @RequestParam("description") String description,
+            Model model) {
+
+        List<Expense> expenses =
+                expenseService.searchByDescription(description);
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("expenses", expenses);
+
+        return "expenses";
+    }
+}
