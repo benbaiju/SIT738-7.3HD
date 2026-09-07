@@ -42,32 +42,24 @@ public class ExpenseController {
             @RequestParam("amount") double amount,
             HttpSession session) {
 
-        /*
-         * Retrieve the authenticated user from the server-side session.
-         * The userId is no longer accepted from the request.
-         */
         User loggedInUser =
                 (User) session.getAttribute("loggedInUser");
 
-        /*
-         * Reject requests from users who are not logged in.
-         */
         if (loggedInUser == null) {
             return "redirect:/login";
         }
 
-        int authenticatedUserId = loggedInUser.getId();
+        int userId = loggedInUser.getId();
 
         Expense expense = new Expense();
-
-        expense.setUserId(authenticatedUserId);
+        expense.setUserId(userId);
         expense.setDescription(description);
         expense.setCategory(category);
         expense.setAmount(amount);
 
         expenseService.saveExpense(expense);
 
-        return "redirect:/expenses?userId=" + authenticatedUserId;
+        return "redirect:/expenses?userId=" + userId;
     }
 
     @PostMapping("/expenses/delete")
@@ -94,4 +86,19 @@ public class ExpenseController {
 
         return "expenses";
     }
+
+    @GetMapping("/financial-insights")
+    public String financialInsights(
+            @RequestParam("userId") int userId,
+            Model model) {
+
+        model.addAttribute(
+                "insights",
+                expenseService.getFinancialInsights(userId));
+
+        model.addAttribute("userId", userId);
+
+        return "financial-insights";
+    }
+
 }

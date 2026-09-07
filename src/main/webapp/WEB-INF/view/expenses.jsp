@@ -271,12 +271,18 @@
         <div class="nav-title">Main menu</div>
 
         <nav class="nav">
+
             <a href="${pageContext.request.contextPath}/dashboard?userId=${userId}">
                 Dashboard
             </a>
 
-            <a class="active" href="${pageContext.request.contextPath}/expenses?userId=${userId}">
+            <a class="active"
+               href="${pageContext.request.contextPath}/expenses?userId=${userId}">
                 Expenses
+            </a>
+
+            <a href="${pageContext.request.contextPath}/financial-insights?userId=${userId}">
+                Financial Insights
             </a>
 
             <a href="${pageContext.request.contextPath}/investments?userId=${userId}">
@@ -298,7 +304,7 @@
             <a href="${pageContext.request.contextPath}/upload?userId=${userId}">
                 Upload Statement
             </a>
-            
+
         </nav>
 
     </aside>
@@ -324,9 +330,12 @@
 
                 <h2>Add Expense</h2>
 
-                <form action="${pageContext.request.contextPath}/expenses/add" method="post">
+                <form action="${pageContext.request.contextPath}/expenses/add"
+                      method="post">
 
-                    <input type="hidden" name="userId" value="${userId}">
+                    <input type="hidden"
+                           name="userId"
+                           value="${userId}">
 
                     <label class="label">Description</label>
                     <input type="text" name="description" required>
@@ -335,7 +344,11 @@
                     <input type="text" name="category" required>
 
                     <label class="label">Amount</label>
-                    <input type="number" name="amount" step="0.01" min="0" required>
+                    <input type="number"
+                           name="amount"
+                           step="0.01"
+                           min="0"
+                           required>
 
                     <button type="submit">Add Expense</button>
 
@@ -351,10 +364,11 @@
                       action="${pageContext.request.contextPath}/expenses/search"
                       method="post">
 
-                    <input type="hidden" name="userId" value="${userId}">
+                    <input type="hidden"
+                           name="userId"
+                           value="${userId}">
 
                     <label class="label">Search by description</label>
-
                     <input type="text" name="description" required>
 
                     <button type="submit">Search</button>
@@ -362,8 +376,13 @@
                 </form>
 
                 <div class="summary">
+
                     <span>Total expenses</span>
-                    <strong>$<%= String.format("%.2f", totalExpenses) %></strong>
+
+                    <strong>
+                        $<%= String.format("%.2f", totalExpenses) %>
+                    </strong>
+
                 </div>
 
                 <div class="table-wrap">
@@ -387,7 +406,9 @@
 
                                 <td><%= expense.getCategory() %></td>
 
-                                <td>$<%= String.format("%.2f", expense.getAmount()) %></td>
+                                <td>
+                                    $<%= String.format("%.2f", expense.getAmount()) %>
+                                </td>
 
                                 <td>
 
@@ -417,9 +438,11 @@
                         } else { %>
 
                             <tr>
+
                                 <td class="empty" colspan="4">
                                     No expenses recorded yet.
                                 </td>
+
                             </tr>
 
                         <% } %>
