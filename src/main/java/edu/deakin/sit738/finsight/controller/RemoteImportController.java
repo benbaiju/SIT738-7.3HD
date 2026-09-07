@@ -43,20 +43,68 @@ public class RemoteImportController {
             Model model) {
 
         try {
-            String csvContent = fetchRemoteFile(url);
+
+            String response = fetchRemoteFile(url);
+
+            if (isValidCsv(response)) {
+
+                model.addAttribute(
+                        "message",
+                        "CSV detected. Review the extracted data before importing."
+                );
+
+                model.addAttribute("csvPreview", response);
+                model.addAttribute("isCsv", true);
+                model.addAttribute("url", url);
+
+            } else {
+
+                model.addAttribute(
+                        "message",
+                        "The response is not a CSV file."
+                );
+
+                model.addAttribute("responsePreview", response);
+                model.addAttribute("isCsv", false);
+
+            }
+
+        } catch (Exception e) {
+
+            model.addAttribute(
+                    "error",
+                    "Error fetching URL: " + e.getMessage()
+            );
+
+        }
+
+        model.addAttribute("userId", userId);
+
+        return "upload";
+    }
+
+    @PostMapping("/remote-import/save")
+    public String saveImportedTransactions(
+            @RequestParam("userId") int userId,
+            @RequestParam("csvContent") String csvContent,
+            Model model) {
+
+        try {
 
             importTransactions(csvContent, userId);
 
             model.addAttribute(
                     "message",
-                    "Remote CSV fetched and transactions imported successfully."
+                    "Transactions imported successfully."
             );
 
         } catch (Exception e) {
+
             model.addAttribute(
                     "error",
-                    "Error importing remote CSV: " + e.getMessage()
+                    "Error importing transactions: " + e.getMessage()
             );
+
         }
 
         model.addAttribute("userId", userId);
@@ -76,31 +124,62 @@ public class RemoteImportController {
         int responseCode = connection.getResponseCode();
 
         if (responseCode != HttpURLConnection.HTTP_OK) {
+
             throw new IOException(
                     "Remote server returned HTTP status " + responseCode
             );
+
         }
 
-        StringBuilder csvBuilder = new StringBuilder();
+        StringBuilder responseBuilder = new StringBuilder();
 
         try (
                 InputStream inputStream = connection.getInputStream();
+
                 BufferedReader reader =
                         new BufferedReader(
                                 new InputStreamReader(inputStream)
                         )
         ) {
+
             String line;
 
             while ((line = reader.readLine()) != null) {
-                csvBuilder.append(line).append("\n");
+
+                responseBuilder.append(line).append("\n");
+
             }
 
         } finally {
+
             connection.disconnect();
+
         }
 
-        return csvBuilder.toString();
+        return responseBuilder.toString();
+    }
+
+    private boolean isValidCsv(String content) {
+
+        if (content == null || content.trim().isEmpty()) {
+
+            return false;
+
+        }
+
+        String[] lines = content.split("\\r?\\n");
+
+        if (lines.length < 2) {
+
+            return false;
+
+        }
+
+        String header = lines[0].toLowerCase();
+
+        return header.contains("date")
+                && header.contains("description")
+                && header.contains("amount");
     }
 
     private void importTransactions(
@@ -117,18 +196,23 @@ public class RemoteImportController {
                                 new StringReader(csvContent)
                         )
         ) {
+
             String line = reader.readLine();
 
             while ((line = reader.readLine()) != null) {
 
                 if (line.trim().isEmpty()) {
+
                     continue;
+
                 }
 
                 String[] values = line.split(",", -1);
 
                 if (values.length < 6) {
+
                     continue;
+
                 }
 
                 BankTransaction transaction =
@@ -163,7 +247,11 @@ public class RemoteImportController {
                 bankTransactionService.saveTransaction(
                         transaction
                 );
+
             }
+
         }
+
     }
+
 }

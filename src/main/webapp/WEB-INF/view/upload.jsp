@@ -1,13 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Statement | FinSight</title>
-
     <style>
         * {
             box-sizing: border-box;
@@ -110,7 +107,7 @@
             font-size: 21px;
         }
 
-        .card p {
+        .card > p {
             color: #64748b;
             margin-bottom: 26px;
         }
@@ -272,6 +269,25 @@
             background: #e2e8f0;
         }
 
+        .preview {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+
+        .preview-note {
+            color: #64748b;
+            margin-top: 15px !important;
+            margin-bottom: 0 !important;
+        }
+
         @media (max-width: 600px) {
             .layout {
                 display: block;
@@ -323,7 +339,6 @@
         }
     </style>
 </head>
-
 <body>
 
     <div class="layout">
@@ -465,7 +480,7 @@
                     <h3>Import from URL</h3>
 
                     <p>
-                        Paste the URL of a CSV file to fetch and import transactions.
+                        Paste the URL of a CSV file to fetch and preview transactions.
                     </p>
 
                     <form action="${pageContext.request.contextPath}/remote-import"
@@ -500,7 +515,7 @@
 
                             <button class="button remote-button"
                                     type="submit">
-                                Import Transactions
+                                Preview Data
                             </button>
 
                         </div>
@@ -508,6 +523,65 @@
                     </form>
 
                 </div>
+
+                <% if (request.getAttribute("csvPreview") != null) { %>
+
+                    <div class="option">
+
+                        <h3>Extracted CSV Data</h3>
+
+                        <p>
+                            CSV detected. Review the extracted transactions before importing.
+                        </p>
+
+                        <pre class="preview"><%= request.getAttribute("csvPreview") %></pre>
+
+                        <p class="preview-note">
+                            Review the data before importing it into the database.
+                        </p>
+
+                        <form action="${pageContext.request.contextPath}/remote-import/save"
+                              method="post">
+
+                            <input type="hidden"
+                                   name="userId"
+                                   value="<%= request.getAttribute("userId") %>">
+
+                            <textarea name="csvContent"
+                                      style="display:none;"><%= request.getAttribute("csvPreview") %></textarea>
+
+                            <div class="actions">
+
+                                <span></span>
+
+                                <button class="button remote-button"
+                                        type="submit">
+                                    Import Transactions
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                <% } %>
+
+                <% if (request.getAttribute("responsePreview") != null) { %>
+
+                    <div class="option">
+
+                        <h3>Response Preview</h3>
+
+                        <p>
+                            The response is not a CSV file.
+                        </p>
+
+                        <pre class="preview"><%= request.getAttribute("responsePreview") %></pre>
+
+                    </div>
+
+                <% } %>
 
                 <div class="actions">
 
@@ -525,5 +599,4 @@
     </div>
 
 </body>
-
 </html>
