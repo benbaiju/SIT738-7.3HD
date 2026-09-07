@@ -135,7 +135,8 @@
             margin-bottom: 7px;
         }
 
-        input {
+        input,
+        select {
             width: 100%;
             padding: 12px;
             border: 1px solid #cbd5e1;
@@ -341,7 +342,14 @@
                     <input type="text" name="description" required>
 
                     <label class="label">Category</label>
-                    <input type="text" name="category" required>
+                    <select name="category" required>
+                        <option value="">Select category</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Loans">Loans</option>
+                        <option value="Other">Other</option>
+                    </select>
 
                     <label class="label">Amount</label>
                     <input type="number"

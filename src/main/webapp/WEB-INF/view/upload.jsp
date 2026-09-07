@@ -361,6 +361,10 @@
                     Expenses
                 </a>
 
+                <a href="${pageContext.request.contextPath}/financial-insights?userId=${userId}">
+                    Financial Insights
+                </a>
+
                 <a href="${pageContext.request.contextPath}/investments?userId=${userId}">
                     Investments
                 </a>

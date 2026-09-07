@@ -8,7 +8,7 @@
         for (BankTransaction transaction : transactions) {
             if ("income".equalsIgnoreCase(transaction.getTransactionType())) {
                 totalIncome += transaction.getAmount();
-            } else {
+            } else if ("expense".equalsIgnoreCase(transaction.getTransactionType())) {
                 totalExpenses += transaction.getAmount();
             }
         }
@@ -64,6 +64,7 @@
         <nav class="nav">
             <a href="${pageContext.request.contextPath}/dashboard?userId=${userId}">Dashboard</a>
             <a href="${pageContext.request.contextPath}/expenses?userId=${userId}">Expenses</a>
+            <a href="${pageContext.request.contextPath}/financial-insights?userId=${userId}">Financial Insights</a>
             <a href="${pageContext.request.contextPath}/investments?userId=${userId}">Investments</a>
             <a href="${pageContext.request.contextPath}/loans?userId=${userId}">Loans</a>
             <a href="${pageContext.request.contextPath}/goals?userId=${userId}">Financial Goals</a>
@@ -94,7 +95,14 @@
                     <input type="text" name="description" required>
 
                     <label class="label">Category</label>
-                    <input type="text" name="category" required>
+                    <select name="category" required>
+                        <option value="">Select category</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Loans">Loans</option>
+                        <option value="Other">Other</option>
+                    </select>
 
                     <label class="label">Amount</label>
                     <input type="number" name="amount" step="0.01" min="0" required>

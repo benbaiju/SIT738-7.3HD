@@ -33,6 +33,28 @@ public class BankTransactionDAOImpl implements BankTransactionDAO {
     }
 
     @Override
+    public BankTransaction findByUserIdAndTransactionReference(
+            int userId, String transactionReference) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        String hql = "from BankTransaction where userId = :userId "
+                + "and transactionReference = :transactionReference";
+
+        List results = session.createQuery(hql)
+                .setParameter("userId", userId)
+                .setParameter("transactionReference", transactionReference)
+                .setMaxResults(1)
+                .list();
+
+        if (results == null || results.isEmpty()) {
+            return null;
+        }
+
+        return (BankTransaction) results.get(0);
+    }
+
+    @Override
     public void delete(int id) {
         Session session = sessionFactory.getCurrentSession();
 

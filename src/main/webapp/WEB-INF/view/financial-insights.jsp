@@ -279,6 +279,14 @@
                 Financial Goals
             </a>
 
+            <a href="${pageContext.request.contextPath}/transactions?userId=${userId}">
+                Transactions
+            </a>
+
+            <a href="${pageContext.request.contextPath}/upload?userId=${userId}">
+                Upload Statement
+            </a>
+
         </nav>
 
     </aside>
@@ -362,6 +370,10 @@
                 </strong>
             </div>
 
+        </div>
+
+        <div class="insight">
+            <p><%= inferredInsight %></p>
         </div>
 
         <a class="button"

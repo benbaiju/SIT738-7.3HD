@@ -9,5 +9,8 @@ public interface BankTransactionDAO {
 
     List<BankTransaction> findByUserId(int userId);
 
+    BankTransaction findByUserIdAndTransactionReference(
+            int userId, String transactionReference);
+
     void delete(int id);
 }
