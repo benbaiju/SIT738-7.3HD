@@ -30,6 +30,8 @@
         .nav-title { color: #94a3b8; font-size: 12px; text-transform: uppercase; margin: 25px 12px 12px; }
         .nav a { display: block; color: #cbd5e1; text-decoration: none; padding: 13px 12px; border-radius: 8px; margin-bottom: 5px; font-size: 14px; }
         .nav a:hover, .nav a.active { background: #26344d; color: white; }
+        .nav a.logout { margin-top: 25px; background: #7f1d1d; color: white; }
+        .nav a.logout:hover { background: #991b1b; }
         .main { flex: 1; padding: 34px; }
         .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
         .topbar h1 { margin: 0; font-size: 28px; }
@@ -70,6 +72,7 @@
             <a href="${pageContext.request.contextPath}/goals?userId=${userId}">Financial Goals</a>
             <a class="active" href="${pageContext.request.contextPath}/transactions?userId=${userId}">Transactions</a>
             <a href="${pageContext.request.contextPath}/upload?userId=${userId}">Upload Statement</a>
+            <a class="logout" href="${pageContext.request.contextPath}/logout">Logout</a>
         </nav>
     </aside>
 

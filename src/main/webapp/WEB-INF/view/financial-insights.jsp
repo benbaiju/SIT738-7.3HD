@@ -86,6 +86,16 @@
             color: white;
         }
 
+        .nav a.logout {
+            margin-top: 25px;
+            background: #7f1d1d;
+            color: white;
+        }
+
+        .nav a.logout:hover {
+            background: #991b1b;
+        }
+
         .main {
             flex: 1;
             padding: 34px;
@@ -285,6 +295,11 @@
 
             <a href="${pageContext.request.contextPath}/upload?userId=${userId}">
                 Upload Statement
+            </a>
+
+            <a class="logout"
+               href="${pageContext.request.contextPath}/logout">
+                Logout
             </a>
 
         </nav>
