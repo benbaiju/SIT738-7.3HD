@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinSight - Login</title>
+    <title>Login | FinSight</title>
 
     <style>
         * {
@@ -14,8 +14,8 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f4f7f6;
-            color: #172b2a;
+            background: #f5f7fb;
+            color: #172033;
         }
 
         .page {
@@ -23,163 +23,105 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 30px 20px;
+            padding: 34px 20px;
         }
 
-        .container {
+        .card {
             width: 100%;
-            max-width: 1000px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            max-width: 420px;
             background: white;
-            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 18px rgba(15, 23, 42, .04);
         }
 
-        .welcome {
-            background: #123b35;
+        .brand {
+            background: #172033;
             color: white;
-            padding: 55px 45px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .logo {
-            font-size: 30px;
+            font-size: 24px;
             font-weight: bold;
-            margin-bottom: 45px;
+            padding: 20px 26px;
         }
 
-        .logo span {
-            color: #79d6a3;
+        .brand span {
+            color: #6ee7b7;
         }
 
-        .welcome h1 {
-            font-size: 38px;
-            line-height: 1.2;
-            margin: 0 0 20px;
+        .form-area {
+            padding: 26px;
         }
 
-        .welcome p {
-            color: #d1e5dc;
-            font-size: 16px;
-            line-height: 1.7;
-            max-width: 360px;
+        h1 {
+            margin: 0 0 22px;
+            font-size: 20px;
         }
 
-        .form-section {
-            padding: 55px 45px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .form-section h2 {
-            margin: 0 0 10px;
-            font-size: 28px;
-            color: #172b2a;
-        }
-
-        .subtitle {
-            margin: 0 0 30px;
-            color: #71807c;
-            font-size: 14px;
-        }
-
-        .message {
-            background: #fff1f0;
-            color: #c0392b;
-            border: 1px solid #f5c6c2;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
+        .label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
-            color: #344542;
+            color: #475569;
+            margin-bottom: 7px;
         }
 
         input {
             width: 100%;
-            padding: 14px 15px;
-            border: 1px solid #dce5e1;
-            border-radius: 9px;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        input:focus {
-            border-color: #3c9b72;
-            box-shadow: 0 0 0 3px rgba(60, 155, 114, 0.12);
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 9px;
-            background: #287c5b;
-            color: white;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
-            transition: background 0.2s;
-        }
-
-        .login-button:hover {
-            background: #206b4d;
-        }
-
-        .register-link {
-            text-align: center;
-            margin-top: 25px;
-            color: #71807c;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-bottom: 16px;
             font-size: 14px;
         }
 
-        .register-link a {
-            color: #287c5b;
+        button {
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 18px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .link a {
+            color: #2563eb;
             font-weight: bold;
             text-decoration: none;
         }
 
-        .register-link a:hover {
+        .link a:hover {
             text-decoration: underline;
-        }
-
-        @media (max-width: 700px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-
-            .welcome {
-                padding: 35px 30px;
-            }
-
-            .welcome h1 {
-                font-size: 30px;
-            }
-
-            .logo {
-                margin-bottom: 25px;
-            }
-
-            .form-section {
-                padding: 35px 30px;
-            }
         }
     </style>
 </head>
@@ -188,71 +130,42 @@
 
 <div class="page">
 
-    <div class="container">
+    <div class="card">
 
-        <div class="welcome">
+        <div class="brand">Fin<span>Sight</span></div>
 
-            <div class="logo">
-                Fin<span>Sight</span>
+        <div class="form-area">
+
+        <h1>Login</h1>
+
+        <% if (request.getAttribute("error") != null) { %>
+            <div class="error">
+                <%= request.getAttribute("error") %>
             </div>
+        <% } %>
 
-            <h1>Your finances.<br>One clear view.</h1>
+        <% if (request.getAttribute("message") != null) { %>
+            <div class="success">
+                <%= request.getAttribute("message") %>
+            </div>
+        <% } %>
 
-            <p>
-                Manage your expenses, investments, loans, and financial goals
-                in one place.
-            </p>
+        <form action="${pageContext.request.contextPath}/login" method="post">
 
+            <label class="label" for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label class="label" for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <div class="link">
+            Don't have an account?
+            <a href="${pageContext.request.contextPath}/register">Register</a>
         </div>
-
-        <div class="form-section">
-
-            <h2>Welcome back</h2>
-
-            <p class="subtitle">
-                Sign in to continue to your FinSight account.
-            </p>
-
-            <% if (request.getAttribute("err") != null) { %>
-                <div class="message">
-                    <%= request.getAttribute("err") %>
-                </div>
-            <% } %>
-
-            <form action="${pageContext.request.contextPath}/login" method="post">
-
-                <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        required>
-                </div>
-
-                <button type="submit" class="login-button">
-                    Sign in
-                </button>
-
-            </form>
-
-            <div class="register-link">
-                Don't have an account?
-                <a href="${pageContext.request.contextPath}/register">
-                    Create an account
-                </a>
-            </div>
 
         </div>
 
