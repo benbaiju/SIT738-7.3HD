@@ -1,5 +1,7 @@
 package edu.deakin.sit738.finsight.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,13 +53,19 @@ public class UserController {
     public String loginUser(
             @RequestParam("email") String email,
             @RequestParam("password") String password,
-            Model model) {
+            Model model,
+            HttpSession session) {
 
         User user = userService.findByEmail(email);
 
         if (user != null && user.getPassword().equals(password)) {
+
+
+            session.setAttribute("loggedInUser", user);
+
             model.addAttribute("user", user);
             model.addAttribute("userId", user.getId());
+
             return "dashboard";
         }
 
