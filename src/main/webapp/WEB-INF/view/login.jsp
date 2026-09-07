@@ -69,27 +69,6 @@
             max-width: 360px;
         }
 
-        .feature {
-            margin-top: 35px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #d1e5dc;
-            font-size: 14px;
-        }
-
-        .feature-icon {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            background: #24584d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #79d6a3;
-            font-size: 18px;
-        }
-
         .form-section {
             padding: 55px 45px;
             display: flex;
@@ -198,10 +177,6 @@
                 margin-bottom: 25px;
             }
 
-            .feature {
-                margin-top: 20px;
-            }
-
             .form-section {
                 padding: 35px 30px;
             }
@@ -227,16 +202,6 @@
                 Manage your expenses, investments, loans, and financial goals
                 in one place.
             </p>
-
-            <div class="feature">
-                <div class="feature-icon">✓</div>
-                <div>Track your financial progress</div>
-            </div>
-
-            <div class="feature">
-                <div class="feature-icon">✓</div>
-                <div>Plan your future with confidence</div>
-            </div>
 
         </div>
 
