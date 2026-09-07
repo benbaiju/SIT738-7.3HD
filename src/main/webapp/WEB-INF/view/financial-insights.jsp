@@ -26,6 +26,20 @@
 
     String inferredInsight =
             (String) insights.get("inferredInsight");
+
+    double housingPercent = 0;
+    double foodPercent = 0;
+    double transportPercent = 0;
+    double loanPercent = 0;
+    double otherPercent = 0;
+
+    if (totalExpenses > 0) {
+        housingPercent = (housingExpenses / totalExpenses) * 100;
+        foodPercent = (foodExpenses / totalExpenses) * 100;
+        transportPercent = (transportExpenses / totalExpenses) * 100;
+        loanPercent = (loanExpenses / totalExpenses) * 100;
+        otherPercent = (otherExpenses / totalExpenses) * 100;
+    }
 %>
 
 <!DOCTYPE html>
@@ -84,6 +98,16 @@
         .nav a.active {
             background: #26344d;
             color: white;
+        }
+
+        .nav a.logout {
+            margin-top: 25px;
+            background: #7f1d1d;
+            color: white;
+        }
+
+        .nav a.logout:hover {
+            background: #991b1b;
         }
 
         .main {
@@ -279,6 +303,19 @@
                 Financial Goals
             </a>
 
+            <a href="${pageContext.request.contextPath}/transactions?userId=${userId}">
+                Transactions
+            </a>
+
+            <a href="${pageContext.request.contextPath}/upload?userId=${userId}">
+                Upload Statement
+            </a>
+
+            <a class="logout"
+               href="${pageContext.request.contextPath}/logout">
+                Logout
+            </a>
+
         </nav>
 
     </aside>
@@ -331,6 +368,7 @@
                 <span>Housing</span>
                 <strong>
                     $<%= String.format(Locale.US, "%.2f", housingExpenses) %>
+                    (<%= String.format(Locale.US, "%.2f", housingPercent) %>%)
                 </strong>
             </div>
 
@@ -338,6 +376,7 @@
                 <span>Food</span>
                 <strong>
                     $<%= String.format(Locale.US, "%.2f", foodExpenses) %>
+                    (<%= String.format(Locale.US, "%.2f", foodPercent) %>%)
                 </strong>
             </div>
 
@@ -345,6 +384,7 @@
                 <span>Transport</span>
                 <strong>
                     $<%= String.format(Locale.US, "%.2f", transportExpenses) %>
+                    (<%= String.format(Locale.US, "%.2f", transportPercent) %>%)
                 </strong>
             </div>
 
@@ -352,6 +392,7 @@
                 <span>Loans</span>
                 <strong>
                     $<%= String.format(Locale.US, "%.2f", loanExpenses) %>
+                    (<%= String.format(Locale.US, "%.2f", loanPercent) %>%)
                 </strong>
             </div>
 
@@ -359,9 +400,14 @@
                 <span>Other</span>
                 <strong>
                     $<%= String.format(Locale.US, "%.2f", otherExpenses) %>
+                    (<%= String.format(Locale.US, "%.2f", otherPercent) %>%)
                 </strong>
             </div>
 
+        </div>
+
+        <div class="insight">
+            <p><%= inferredInsight %></p>
         </div>
 
         <a class="button"

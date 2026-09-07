@@ -8,12 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import edu.deakin.sit738.finsight.entity.BankTransaction;
 import edu.deakin.sit738.finsight.entity.Expense;
 import edu.deakin.sit738.finsight.entity.FinancialGoal;
 import edu.deakin.sit738.finsight.entity.Investment;
 import edu.deakin.sit738.finsight.entity.Loan;
-import edu.deakin.sit738.finsight.service.BankTransactionService;
 import edu.deakin.sit738.finsight.service.ExpenseService;
 import edu.deakin.sit738.finsight.service.FinancialGoalService;
 import edu.deakin.sit738.finsight.service.InvestmentService;
@@ -34,9 +32,6 @@ public class DashboardController {
     @Autowired
     private FinancialGoalService financialGoalService;
 
-    @Autowired
-    private BankTransactionService bankTransactionService;
-
     @GetMapping("/dashboard")
     public String showDashboard(
             @RequestParam("userId") int userId,
@@ -54,15 +49,11 @@ public class DashboardController {
         List<FinancialGoal> goals =
                 financialGoalService.getGoalsByUserId(userId);
 
-        List<BankTransaction> transactions =
-                bankTransactionService.getTransactionsByUserId(userId);
-
         model.addAttribute("userId", userId);
         model.addAttribute("expenses", expenses);
         model.addAttribute("investments", investments);
         model.addAttribute("loans", loans);
         model.addAttribute("goals", goals);
-        model.addAttribute("transactions", transactions);
 
         return "dashboard";
     }

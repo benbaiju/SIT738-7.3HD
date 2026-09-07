@@ -77,6 +77,16 @@
             color: white;
         }
 
+        .nav a.logout {
+            margin-top: 25px;
+            background: #7f1d1d;
+            color: white;
+        }
+
+        .nav a.logout:hover {
+            background: #991b1b;
+        }
+
         .main {
             flex: 1;
             padding: 34px;
@@ -135,7 +145,8 @@
             margin-bottom: 7px;
         }
 
-        input {
+        input,
+        select {
             width: 100%;
             padding: 12px;
             border: 1px solid #cbd5e1;
@@ -305,6 +316,11 @@
                 Upload Statement
             </a>
 
+            <a class="logout"
+               href="${pageContext.request.contextPath}/logout">
+                Logout
+            </a>
+
         </nav>
 
     </aside>
@@ -341,7 +357,14 @@
                     <input type="text" name="description" required>
 
                     <label class="label">Category</label>
-                    <input type="text" name="category" required>
+                    <select name="category" required>
+                        <option value="">Select category</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Loans">Loans</option>
+                        <option value="Other">Other</option>
+                    </select>
 
                     <label class="label">Amount</label>
                     <input type="number"

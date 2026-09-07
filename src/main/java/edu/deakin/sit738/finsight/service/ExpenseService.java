@@ -1,5 +1,6 @@
 package edu.deakin.sit738.finsight.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,46 @@ public class ExpenseService {
     @Autowired
     private ExpenseDAO expenseDAO;
 
+    public static String normaliseCategory(String category) {
+
+        if (category == null || category.trim().isEmpty()) {
+            return "Other";
+        }
+
+        String normalisedCategory = category.trim().toLowerCase();
+
+        if (normalisedCategory.contains("housing")
+                || normalisedCategory.contains("rent")) {
+            return "Housing";
+        }
+
+        if (normalisedCategory.contains("food")
+                || normalisedCategory.contains("grocery")) {
+            return "Food";
+        }
+
+        if (normalisedCategory.contains("transport")
+                || normalisedCategory.contains("travel")) {
+            return "Transport";
+        }
+
+        if (normalisedCategory.contains("loan")
+                || normalisedCategory.contains("debt")) {
+            return "Loans";
+        }
+
+        return "Other";
+    }
+
     @Transactional
     public void saveExpense(Expense expense) {
+        expense.setCategory(normaliseCategory(expense.getCategory()));
+        expense.setAmount(Math.abs(expense.getAmount()));
+
+        if (expense.getExpenseDate() == null) {
+            expense.setExpenseDate(new Date());
+        }
+
         expenseDAO.save(expense);
     }
 
@@ -58,34 +97,23 @@ public class ExpenseService {
             for (Expense expense : expenses) {
 
                 double amount = expense.getAmount();
-                String category = expense.getCategory();
+                String category = normaliseCategory(expense.getCategory());
 
                 totalExpenses += amount;
 
-                if (category == null) {
-                    category = "Other";
-                }
-
-                String normalisedCategory =
-                        category.trim().toLowerCase();
-
-                if (normalisedCategory.contains("housing")
-                        || normalisedCategory.contains("rent")) {
+                if ("Housing".equals(category)) {
 
                     housingExpenses += amount;
 
-                } else if (normalisedCategory.contains("food")
-                        || normalisedCategory.contains("grocery")) {
+                } else if ("Food".equals(category)) {
 
                     foodExpenses += amount;
 
-                } else if (normalisedCategory.contains("transport")
-                        || normalisedCategory.contains("travel")) {
+                } else if ("Transport".equals(category)) {
 
                     transportExpenses += amount;
 
-                } else if (normalisedCategory.contains("loan")
-                        || normalisedCategory.contains("debt")) {
+                } else if ("Loans".equals(category)) {
 
                     loanExpenses += amount;
 

@@ -131,8 +131,10 @@ public class FileUploadController {
                 transaction.setDescription(values[1].trim());
                 transaction.setCategory(values[2].trim());
 
-                transaction.setAmount(
-                        Double.parseDouble(values[3].trim()));
+                String amountValue =
+                        values[3].trim().replace("$", "").replace(",", "");
+
+                transaction.setAmount(Double.parseDouble(amountValue));
 
                 transaction.setTransactionType(values[4].trim());
 

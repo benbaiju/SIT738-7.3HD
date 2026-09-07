@@ -1,5 +1,4 @@
 <%@ page import="java.util.List" %>
-<%@ page import="edu.deakin.sit738.finsight.entity.BankTransaction" %>
 <%@ page import="edu.deakin.sit738.finsight.entity.Expense" %>
 <%@ page import="edu.deakin.sit738.finsight.entity.Investment" %>
 <%@ page import="edu.deakin.sit738.finsight.entity.Loan" %>
@@ -18,9 +17,6 @@
     List<FinancialGoal> goals =
             (List<FinancialGoal>) request.getAttribute("goals");
 
-    List<BankTransaction> transactions =
-            (List<BankTransaction>) request.getAttribute("transactions");
-
     double totalExpenses = 0;
     double totalInvestments = 0;
     double totalLoans = 0;
@@ -30,14 +26,6 @@
     if (expenses != null) {
         for (Expense expense : expenses) {
             totalExpenses += expense.getAmount();
-        }
-    }
-
-    if (transactions != null) {
-        for (BankTransaction transaction : transactions) {
-            if ("Expense".equalsIgnoreCase(transaction.getTransactionType())) {
-                totalExpenses += transaction.getAmount();
-            }
         }
     }
 
@@ -353,6 +341,10 @@
                 Expenses
             </a>
 
+            <a href="${pageContext.request.contextPath}/financial-insights?userId=${userId}">
+                Financial Insights
+            </a>
+
             <a href="${pageContext.request.contextPath}/investments?userId=${userId}">
                 Investments
             </a>
@@ -398,7 +390,7 @@
         <div class="cards">
 
             <div class="card">
-                <span>Total Expenses</span>
+                <span>Total expenses</span>
                 <strong>
                     $<%= String.format("%.2f", totalExpenses) %>
                 </strong>

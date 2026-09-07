@@ -232,8 +232,11 @@ public class RemoteImportController {
                         values[2].trim()
                 );
 
+                String amountValue =
+                        values[3].trim().replace("$", "").replace(",", "");
+
                 transaction.setAmount(
-                        Double.parseDouble(values[3].trim())
+                        Double.parseDouble(amountValue)
                 );
 
                 transaction.setTransactionType(
