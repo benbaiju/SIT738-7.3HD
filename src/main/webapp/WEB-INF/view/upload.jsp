@@ -449,7 +449,7 @@
                     <h3>Upload a Statement</h3>
 
                     <p>
-                        Select a CSV file from your computer.
+                        Select a CSV file from your computer (maximum 5 MB).
                     </p>
 
                     <form action="${pageContext.request.contextPath}/upload?userId=<%= request.getAttribute("userId") %>"
@@ -469,12 +469,12 @@
                             <h3>Select your bank statement</h3>
 
                             <p>
-                                Choose a CSV file from your computer to upload.
+                                Only CSV files are accepted.
                             </p>
 
                             <input type="file"
                                    name="file"
-                                   accept=".csv"
+                                   accept=".csv,text/csv"
                                    required>
 
                         </div>
