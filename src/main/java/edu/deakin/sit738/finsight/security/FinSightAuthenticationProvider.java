@@ -62,7 +62,7 @@ public class FinSightAuthenticationProvider implements AuthenticationProvider {
 
         return new UsernamePasswordAuthenticationToken(
                 user.getEmail(),
-                user.getPassword(),
+                null,
                 Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
     }
 

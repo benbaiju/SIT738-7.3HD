@@ -71,69 +71,6 @@ public class FinancialGoalController {
         return "redirect:/goals?userId=" + userId;
     }
 
-    @GetMapping("/goals/edit")
-    public String showEditGoal(
-            @RequestParam("id") int id,
-            HttpSession session,
-            Model model) {
-
-        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
-        if (loggedInUser == null) {
-            AppLogger.warn("Unauthorized goal edit access attempt.");
-            return "redirect:/login";
-        }
-
-        int userId = loggedInUser.getId();
-        FinancialGoal goal =
-                financialGoalService.getGoalByIdForUser(id, userId);
-
-        if (goal == null) {
-            AppLogger.warn("Blocked goal edit for non-owned record. userId="
-                    + userId + " goalId=" + id);
-            return "redirect:/goals?userId=" + userId;
-        }
-
-        model.addAttribute("userId", userId);
-        model.addAttribute("goal", goal);
-
-        return "edit-goal";
-    }
-
-    @PostMapping("/goals/update")
-    public String updateGoal(
-            @RequestParam("id") int id,
-            @RequestParam("goalName") String goalName,
-            @RequestParam("description") String description,
-            @RequestParam("targetAmount") double targetAmount,
-            @RequestParam("currentAmount") double currentAmount,
-            HttpSession session) {
-
-        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
-        if (loggedInUser == null) {
-            AppLogger.warn("Unauthorized goal update attempt.");
-            return "redirect:/login";
-        }
-
-        int userId = loggedInUser.getId();
-        FinancialGoal goal =
-                financialGoalService.getGoalByIdForUser(id, userId);
-
-        if (goal == null) {
-            AppLogger.warn("Blocked goal update for non-owned record. userId="
-                    + userId + " goalId=" + id);
-            return "redirect:/goals?userId=" + userId;
-        }
-
-        goal.setGoalName(goalName);
-        goal.setDescription(description);
-        goal.setTargetAmount(targetAmount);
-        goal.setCurrentAmount(currentAmount);
-
-        financialGoalService.saveGoal(goal);
-
-        return "redirect:/goals?userId=" + userId;
-    }
-
     @PostMapping("/goals/delete")
     public String deleteGoal(
             @RequestParam("id") int id,

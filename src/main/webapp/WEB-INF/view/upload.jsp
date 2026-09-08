@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="org.springframework.web.util.HtmlUtils" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -577,7 +578,8 @@
                             CSV detected. Review the extracted transactions before importing.
                         </p>
 
-                        <pre class="preview"><%= request.getAttribute("csvPreview") %></pre>
+                        <pre class="preview"><%= HtmlUtils.htmlEscape(
+                                String.valueOf(request.getAttribute("csvPreview"))) %></pre>
 
                         <p class="preview-note">
                             Review the data before importing it into the database.
@@ -595,7 +597,8 @@
                                    value="<%= request.getAttribute("userId") %>">
 
                             <textarea name="csvContent"
-                                      style="display:none;"><%= request.getAttribute("csvPreview") %></textarea>
+                                      style="display:none;"><%= HtmlUtils.htmlEscape(
+                                              String.valueOf(request.getAttribute("csvPreview"))) %></textarea>
 
                             <div class="actions">
 
@@ -624,7 +627,8 @@
                             The response is not a CSV file.
                         </p>
 
-                        <pre class="preview"><%= request.getAttribute("responsePreview") %></pre>
+                        <pre class="preview"><%= HtmlUtils.htmlEscape(
+                                String.valueOf(request.getAttribute("responsePreview"))) %></pre>
 
                     </div>
 

@@ -38,6 +38,7 @@ public class FinSightAuthenticationSuccessHandler
         HttpSession session = request.getSession(true);
 
         if (user != null) {
+            user.setPassword(null);
             session.setAttribute(SessionAuthUtil.SESSION_USER_ATTRIBUTE, user);
             CsrfTokenUtil.createToken(session);
             AppLogger.info("Successful login. userId=" + user.getId());

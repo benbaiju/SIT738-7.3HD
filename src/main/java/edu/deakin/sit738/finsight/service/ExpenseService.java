@@ -71,6 +71,13 @@ public class ExpenseService {
         return expenseDAO.searchByDescription(userId, description);
     }
 
+    @Transactional(readOnly = true)
+    public List<Expense> searchByDescriptionForUser(
+            int userId,
+            String description) {
+        return expenseDAO.searchByDescriptionForUser(userId, description);
+    }
+
     @Transactional
     public void deleteExpense(int id, int userId) {
         expenseDAO.delete(id, userId);

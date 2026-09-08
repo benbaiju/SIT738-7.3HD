@@ -113,7 +113,8 @@ public class ExpenseController {
         int userId = loggedInUser.getId();
 
         List<Expense> expenses =
-                expenseService.searchByDescription(userId, description);
+                expenseService.searchByDescriptionForUser(
+                        userId, description);
 
         model.addAttribute("userId", userId);
         model.addAttribute("expenses", expenses);

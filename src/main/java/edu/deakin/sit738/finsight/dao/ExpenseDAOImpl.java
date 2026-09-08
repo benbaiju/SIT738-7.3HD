@@ -47,6 +47,24 @@ public class ExpenseDAOImpl implements ExpenseDAO {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public List<Expense> searchByDescriptionForUser(
+            int userId,
+            String description) {
+
+        Session session = sessionFactory.getCurrentSession();
+
+        return session
+                .createNativeQuery(
+                        "CALL search_expenses_by_description_for_user("
+                                + ":userId, :description)")
+                .addEntity(Expense.class)
+                .setParameter("userId", userId)
+                .setParameter("description", description)
+                .list();
+    }
+
+    @Override
     public Expense findById(int id) {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Expense.class, id);
