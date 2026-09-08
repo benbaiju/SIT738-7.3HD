@@ -40,7 +40,6 @@ public class Expense {
     )
     private String category;
 
-    // Primitive double cannot use @NotNull meaningfully; enforce a positive amount.
     @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
     private double amount;
 

@@ -87,6 +87,9 @@
             <div class="card">
                 <h2>Add Investment</h2>
                 <form action="${pageContext.request.contextPath}/investments/add" method="post">
+                    <input type="hidden"
+                           name="csrfToken"
+                           value="${sessionScope.csrfToken}">
                     <input type="hidden" name="userId" value="${userId}">
 
                     <label class="label">Asset Name</label>
@@ -152,6 +155,9 @@
                                 <td>$<%= String.format("%.2f", investment.getCurrentValue()) %></td>
                                 <td>
                                     <form action="${pageContext.request.contextPath}/investments/delete" method="post">
+                                        <input type="hidden"
+                                               name="csrfToken"
+                                               value="${sessionScope.csrfToken}">
                                         <input type="hidden" name="id" value="<%= investment.getId() %>">
                                         <input type="hidden" name="userId" value="${userId}">
                                         <button class="delete" type="submit">Delete</button>

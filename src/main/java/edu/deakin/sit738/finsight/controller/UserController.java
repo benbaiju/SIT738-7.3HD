@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.deakin.sit738.finsight.entity.User;
 import edu.deakin.sit738.finsight.service.UserService;
+import edu.deakin.sit738.finsight.util.CsrfTokenUtil;
 
 @Controller
 public class UserController {
@@ -62,6 +63,7 @@ public class UserController {
 
 
             session.setAttribute("loggedInUser", user);
+            CsrfTokenUtil.createToken(session);
 
             model.addAttribute("user", user);
             model.addAttribute("userId", user.getId());

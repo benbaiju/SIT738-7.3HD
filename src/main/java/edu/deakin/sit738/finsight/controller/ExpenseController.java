@@ -39,10 +39,6 @@ public class ExpenseController {
         return "expenses";
     }
 
-    /**
-     * Secure add expense endpoint (default).
-     * Uses Bean Validation (@Valid) before persisting user input.
-     */
     @PostMapping("/expenses/add")
     public String addExpense(
             @Valid @ModelAttribute("expense") Expense expense,
@@ -69,38 +65,6 @@ public class ExpenseController {
         }
 
         expense.setUserId(userId);
-        expenseService.saveExpense(expense);
-
-        return "redirect:/expenses?userId=" + userId;
-    }
-
-    /**
-     * VULNERABLE (intentionally retained for SAST/DAST comparison):
-     * Accepts and stores raw user input with no Bean Validation.
-     * Do not expose this endpoint from the normal expenses UI.
-     */
-    @PostMapping("/expenses/add-vulnerable")
-    public String addExpenseVulnerable(
-            @RequestParam("description") String description,
-            @RequestParam("category") String category,
-            @RequestParam("amount") double amount,
-            HttpSession session) {
-
-        User loggedInUser =
-                (User) session.getAttribute("loggedInUser");
-
-        if (loggedInUser == null) {
-            return "redirect:/login";
-        }
-
-        int userId = loggedInUser.getId();
-
-        Expense expense = new Expense();
-        expense.setUserId(userId);
-        expense.setDescription(description);
-        expense.setCategory(category);
-        expense.setAmount(amount);
-
         expenseService.saveExpense(expense);
 
         return "redirect:/expenses?userId=" + userId;

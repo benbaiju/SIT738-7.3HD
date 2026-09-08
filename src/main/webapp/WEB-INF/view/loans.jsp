@@ -86,6 +86,9 @@
             <div class="card">
                 <h2>Add Loan</h2>
                 <form action="${pageContext.request.contextPath}/loans/add" method="post">
+                    <input type="hidden"
+                           name="csrfToken"
+                           value="${sessionScope.csrfToken}">
                     <input type="hidden" name="userId" value="${userId}">
 
                     <label class="label">Loan Type</label>
@@ -147,6 +150,9 @@
                                 <td>$<%= String.format("%.2f", loan.getMonthlyRepayment()) %></td>
                                 <td>
                                     <form action="${pageContext.request.contextPath}/loans/delete" method="post">
+                                        <input type="hidden"
+                                               name="csrfToken"
+                                               value="${sessionScope.csrfToken}">
                                         <input type="hidden" name="id" value="<%= loan.getId() %>">
                                         <input type="hidden" name="userId" value="${userId}">
                                         <button class="delete" type="submit">Delete</button>

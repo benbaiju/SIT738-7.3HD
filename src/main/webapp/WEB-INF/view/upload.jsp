@@ -457,6 +457,10 @@
                           enctype="multipart/form-data">
 
                         <input type="hidden"
+                               name="csrfToken"
+                               value="${sessionScope.csrfToken}">
+
+                        <input type="hidden"
                                name="userId"
                                value="<%= request.getAttribute("userId") %>">
 
@@ -504,6 +508,10 @@
 
                     <form action="${pageContext.request.contextPath}/remote-import"
                           method="post">
+
+                        <input type="hidden"
+                               name="csrfToken"
+                               value="${sessionScope.csrfToken}">
 
                         <input type="hidden"
                                name="userId"
@@ -561,6 +569,10 @@
 
                         <form action="${pageContext.request.contextPath}/remote-import/save"
                               method="post">
+
+                            <input type="hidden"
+                                   name="csrfToken"
+                                   value="${sessionScope.csrfToken}">
 
                             <input type="hidden"
                                    name="userId"

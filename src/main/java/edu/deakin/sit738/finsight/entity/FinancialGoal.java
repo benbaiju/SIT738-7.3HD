@@ -26,8 +26,6 @@ public class FinancialGoal {
     public FinancialGoal() {
     }
 
-    // Getters and setters
-
     public int getId() {
         return id;
     }

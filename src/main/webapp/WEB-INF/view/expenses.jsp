@@ -380,6 +380,10 @@
                       onsubmit="return validateExpenseForm();">
 
                     <input type="hidden"
+                           name="csrfToken"
+                           value="${sessionScope.csrfToken}">
+
+                    <input type="hidden"
                            name="userId"
                            value="${userId}">
 
@@ -471,11 +475,6 @@
 
                             <tr>
 
-                                <%-- SECURE OUTPUT: HTML-escaped user-controlled fields.
-                                     Previous vulnerable output (retained for comparison):
-                                     <td><%= expense.getDescription() %></td>
-                                     <td><%= expense.getCategory() %></td>
-                                --%>
                                 <td><%= safeDescription %></td>
 
                                 <td><%= safeCategory %></td>
@@ -488,6 +487,10 @@
 
                                     <form action="${pageContext.request.contextPath}/expenses/delete"
                                           method="post">
+
+                                        <input type="hidden"
+                                               name="csrfToken"
+                                               value="${sessionScope.csrfToken}">
 
                                         <input type="hidden"
                                                name="id"

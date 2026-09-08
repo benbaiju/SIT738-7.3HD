@@ -344,6 +344,10 @@
 
                 <form action="${pageContext.request.contextPath}/goals/add" method="post">
 
+                    <input type="hidden"
+                           name="csrfToken"
+                           value="${sessionScope.csrfToken}">
+
                     <input type="hidden" name="userId" value="${userId}">
 
                     <label class="label">Goal Name</label>
@@ -431,6 +435,10 @@
 
                             <td>
                                 <form action="${pageContext.request.contextPath}/goals/delete" method="post">
+
+                                    <input type="hidden"
+                                           name="csrfToken"
+                                           value="${sessionScope.csrfToken}">
 
                                     <input type="hidden"
                                            name="id"
