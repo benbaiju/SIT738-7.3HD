@@ -26,12 +26,18 @@ public class FinancialGoalService {
     }
 
     @Transactional(readOnly = true)
-    public FinancialGoal getGoalById(int id) {
-        return financialGoalDAO.findById(id);
+    public FinancialGoal getGoalByIdForUser(int id, int userId) {
+        FinancialGoal goal = financialGoalDAO.findById(id);
+
+        if (goal == null || goal.getUserId() != userId) {
+            return null;
+        }
+
+        return goal;
     }
 
     @Transactional
-    public void deleteGoal(int id) {
-        financialGoalDAO.delete(id);
+    public void deleteGoal(int id, int userId) {
+        financialGoalDAO.delete(id, userId);
     }
 }

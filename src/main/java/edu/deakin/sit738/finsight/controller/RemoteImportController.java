@@ -10,6 +10,8 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.deakin.sit738.finsight.entity.BankTransaction;
+import edu.deakin.sit738.finsight.entity.User;
 import edu.deakin.sit738.finsight.service.BankTransactionService;
 import edu.deakin.sit738.finsight.util.AppLogger;
+import edu.deakin.sit738.finsight.util.SessionAuthUtil;
 
 @Controller
 public class RemoteImportController {
@@ -28,20 +32,32 @@ public class RemoteImportController {
     private BankTransactionService bankTransactionService;
 
     @GetMapping("/remote-import")
-    public String showRemoteImportPage(
-            @RequestParam("userId") int userId,
-            Model model) {
+    public String showRemoteImportPage(HttpSession session, Model model) {
 
-        model.addAttribute("userId", userId);
+        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
+        if (loggedInUser == null) {
+            AppLogger.warn("Unauthorized remote-import page access attempt.");
+            return "redirect:/login";
+        }
+
+        model.addAttribute("userId", loggedInUser.getId());
 
         return "upload";
     }
 
     @PostMapping("/remote-import")
     public String importFromUrl(
-            @RequestParam("userId") int userId,
             @RequestParam("url") String url,
+            HttpSession session,
             Model model) {
+
+        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
+        if (loggedInUser == null) {
+            AppLogger.warn("Unauthorized remote-import attempt.");
+            return "redirect:/login";
+        }
+
+        int userId = loggedInUser.getId();
 
         try {
 
@@ -87,9 +103,17 @@ public class RemoteImportController {
 
     @PostMapping("/remote-import/save")
     public String saveImportedTransactions(
-            @RequestParam("userId") int userId,
             @RequestParam("csvContent") String csvContent,
+            HttpSession session,
             Model model) {
+
+        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
+        if (loggedInUser == null) {
+            AppLogger.warn("Unauthorized remote-import save attempt.");
+            return "redirect:/login";
+        }
+
+        int userId = loggedInUser.getId();
 
         try {
 

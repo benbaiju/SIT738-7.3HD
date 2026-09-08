@@ -47,12 +47,18 @@ public class ExpenseDAOImpl implements ExpenseDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public Expense findById(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Expense.class, id);
+    }
+
+    @Override
+    public void delete(int id, int userId) {
         Session session = sessionFactory.getCurrentSession();
 
         Expense expense = session.get(Expense.class, id);
 
-        if (expense != null) {
+        if (expense != null && expense.getUserId() == userId) {
             session.delete(expense);
         }
     }

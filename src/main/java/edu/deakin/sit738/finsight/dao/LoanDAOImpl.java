@@ -33,12 +33,12 @@ public class LoanDAOImpl implements LoanDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, int userId) {
         Session session = sessionFactory.getCurrentSession();
 
         Loan loan = session.get(Loan.class, id);
 
-        if (loan != null) {
+        if (loan != null && loan.getUserId() == userId) {
             session.delete(loan);
         }
     }

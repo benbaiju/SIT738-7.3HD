@@ -12,5 +12,7 @@ public interface ExpenseDAO {
 
     List<Expense> searchByDescription(int userId, String description);
 
-    void delete(int id);
+    Expense findById(int id);
+
+    void delete(int id, int userId);
 }

@@ -33,12 +33,12 @@ public class InvestmentDAOImpl implements InvestmentDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, int userId) {
         Session session = sessionFactory.getCurrentSession();
 
         Investment investment = session.get(Investment.class, id);
 
-        if (investment != null) {
+        if (investment != null && investment.getUserId() == userId) {
             session.delete(investment);
         }
     }

@@ -1,6 +1,7 @@
 package edu.deakin.sit738.finsight.dao;
 
 import java.util.List;
+
 import edu.deakin.sit738.finsight.entity.BankTransaction;
 
 public interface BankTransactionDAO {
@@ -12,5 +13,5 @@ public interface BankTransactionDAO {
     BankTransaction findByUserIdAndTransactionReference(
             int userId, String transactionReference);
 
-    void delete(int id);
+    void delete(int id, int userId);
 }

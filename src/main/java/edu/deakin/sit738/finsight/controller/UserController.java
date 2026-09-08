@@ -66,11 +66,8 @@ public class UserController {
             session.setAttribute("loggedInUser", user);
             CsrfTokenUtil.createToken(session);
 
-            model.addAttribute("user", user);
-            model.addAttribute("userId", user.getId());
-
             AppLogger.info("Successful login. userId=" + user.getId());
-            return "dashboard";
+            return "redirect:/dashboard";
         }
 
         AppLogger.warn("Failed login attempt for email=" + email);

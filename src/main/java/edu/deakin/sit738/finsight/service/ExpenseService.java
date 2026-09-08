@@ -72,8 +72,8 @@ public class ExpenseService {
     }
 
     @Transactional
-    public void deleteExpense(int id) {
-        expenseDAO.delete(id);
+    public void deleteExpense(int id, int userId) {
+        expenseDAO.delete(id, userId);
     }
 
     @Transactional(readOnly = true)

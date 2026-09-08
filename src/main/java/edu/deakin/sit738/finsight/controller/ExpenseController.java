@@ -20,6 +20,7 @@ import edu.deakin.sit738.finsight.entity.Expense;
 import edu.deakin.sit738.finsight.entity.User;
 import edu.deakin.sit738.finsight.service.ExpenseService;
 import edu.deakin.sit738.finsight.util.AppLogger;
+import edu.deakin.sit738.finsight.util.SessionAuthUtil;
 
 @Controller
 public class ExpenseController {
@@ -28,9 +29,15 @@ public class ExpenseController {
     private ExpenseService expenseService;
 
     @GetMapping("/expenses")
-    public String showExpenses(
-            @RequestParam("userId") int userId,
-            Model model) {
+    public String showExpenses(HttpSession session, Model model) {
+
+        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
+        if (loggedInUser == null) {
+            AppLogger.warn("Unauthorized expenses access attempt.");
+            return "redirect:/login";
+        }
+
+        int userId = loggedInUser.getId();
 
         List<Expense> expenses =
                 expenseService.getExpensesByUserId(userId);
@@ -49,9 +56,7 @@ public class ExpenseController {
             HttpSession session,
             Model model) {
 
-        User loggedInUser =
-                (User) session.getAttribute("loggedInUser");
-
+        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
         if (loggedInUser == null) {
             AppLogger.warn("Unauthorized expense add attempt.");
             return "redirect:/login";
@@ -80,9 +85,16 @@ public class ExpenseController {
     @PostMapping("/expenses/delete")
     public String deleteExpense(
             @RequestParam("id") int id,
-            @RequestParam("userId") int userId) {
+            HttpSession session) {
 
-        expenseService.deleteExpense(id);
+        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
+        if (loggedInUser == null) {
+            AppLogger.warn("Unauthorized expense delete attempt.");
+            return "redirect:/login";
+        }
+
+        int userId = loggedInUser.getId();
+        expenseService.deleteExpense(id, userId);
 
         return "redirect:/expenses?userId=" + userId;
     }
@@ -93,9 +105,7 @@ public class ExpenseController {
             HttpSession session,
             Model model) {
 
-        User loggedInUser =
-                (User) session.getAttribute("loggedInUser");
-
+        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
         if (loggedInUser == null) {
             return "redirect:/login";
         }
@@ -113,9 +123,15 @@ public class ExpenseController {
     }
 
     @GetMapping("/financial-insights")
-    public String financialInsights(
-            @RequestParam("userId") int userId,
-            Model model) {
+    public String financialInsights(HttpSession session, Model model) {
+
+        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
+        if (loggedInUser == null) {
+            AppLogger.warn("Unauthorized financial insights access attempt.");
+            return "redirect:/login";
+        }
+
+        int userId = loggedInUser.getId();
 
         model.addAttribute(
                 "insights",

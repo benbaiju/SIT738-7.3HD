@@ -26,7 +26,7 @@ public class LoanService {
     }
 
     @Transactional
-    public void deleteLoan(int id) {
-        loanDAO.delete(id);
+    public void deleteLoan(int id, int userId) {
+        loanDAO.delete(id, userId);
     }
 }

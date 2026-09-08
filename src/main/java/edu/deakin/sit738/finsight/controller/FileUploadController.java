@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,9 +27,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import edu.deakin.sit738.finsight.entity.BankTransaction;
 import edu.deakin.sit738.finsight.entity.UploadedFile;
+import edu.deakin.sit738.finsight.entity.User;
 import edu.deakin.sit738.finsight.service.BankTransactionService;
 import edu.deakin.sit738.finsight.service.UploadedFileService;
 import edu.deakin.sit738.finsight.util.AppLogger;
+import edu.deakin.sit738.finsight.util.SessionAuthUtil;
 
 @Controller
 public class FileUploadController {
@@ -59,28 +62,33 @@ public class FileUploadController {
     private BankTransactionService bankTransactionService;
 
     @GetMapping("/upload")
-    public String showUploadPage(
-            @RequestParam("userId") int userId,
-            Model model) {
+    public String showUploadPage(HttpSession session, Model model) {
 
-        model.addAttribute("userId", userId);
+        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
+        if (loggedInUser == null) {
+            AppLogger.warn("Unauthorized upload page access attempt.");
+            return "redirect:/login";
+        }
+
+        model.addAttribute("userId", loggedInUser.getId());
 
         return "upload";
     }
 
     @PostMapping("/upload")
     public String uploadFile(
-            @RequestParam(value = "userId", required = false) Integer userId,
             @RequestParam("file") MultipartFile file,
             HttpServletRequest request,
+            HttpSession session,
             Model model) {
 
-        if (userId == null) {
-            model.addAttribute("error",
-                    "User ID is missing. Please open the upload page again.");
-            return "upload";
+        User loggedInUser = SessionAuthUtil.getLoggedInUser(session);
+        if (loggedInUser == null) {
+            AppLogger.warn("Unauthorized upload attempt.");
+            return "redirect:/login";
         }
 
+        int userId = loggedInUser.getId();
         model.addAttribute("userId", userId);
 
         String validationError = validateUpload(file);

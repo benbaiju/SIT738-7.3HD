@@ -93,7 +93,7 @@ public class BankTransactionService {
     }
 
     @Transactional
-    public void deleteTransaction(int id) {
-        bankTransactionDAO.delete(id);
+    public void deleteTransaction(int id, int userId) {
+        bankTransactionDAO.delete(id, userId);
     }
 }

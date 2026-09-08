@@ -39,12 +39,12 @@ public class FinancialGoalDAOImpl implements FinancialGoalDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, int userId) {
         Session session = sessionFactory.getCurrentSession();
 
         FinancialGoal goal = session.get(FinancialGoal.class, id);
 
-        if (goal != null) {
+        if (goal != null && goal.getUserId() == userId) {
             session.delete(goal);
         }
     }

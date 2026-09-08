@@ -55,13 +55,13 @@ public class BankTransactionDAOImpl implements BankTransactionDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id, int userId) {
         Session session = sessionFactory.getCurrentSession();
 
         BankTransaction transaction =
                 session.get(BankTransaction.class, id);
 
-        if (transaction != null) {
+        if (transaction != null && transaction.getUserId() == userId) {
             session.delete(transaction);
         }
     }

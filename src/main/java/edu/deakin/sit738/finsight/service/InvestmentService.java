@@ -26,7 +26,7 @@ public class InvestmentService {
     }
 
     @Transactional
-    public void deleteInvestment(int id) {
-        investmentDAO.delete(id);
+    public void deleteInvestment(int id, int userId) {
+        investmentDAO.delete(id, userId);
     }
 }

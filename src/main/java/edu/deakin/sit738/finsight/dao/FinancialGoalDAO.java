@@ -1,6 +1,7 @@
 package edu.deakin.sit738.finsight.dao;
 
 import java.util.List;
+
 import edu.deakin.sit738.finsight.entity.FinancialGoal;
 
 public interface FinancialGoalDAO {
@@ -11,5 +12,5 @@ public interface FinancialGoalDAO {
 
     FinancialGoal findById(int id);
 
-    void delete(int id);
+    void delete(int id, int userId);
 }
