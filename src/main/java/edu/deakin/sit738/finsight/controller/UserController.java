@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.deakin.sit738.finsight.entity.User;
 import edu.deakin.sit738.finsight.service.UserService;
+import edu.deakin.sit738.finsight.util.AppLogger;
 import edu.deakin.sit738.finsight.util.CsrfTokenUtil;
 
 @Controller
@@ -68,9 +69,11 @@ public class UserController {
             model.addAttribute("user", user);
             model.addAttribute("userId", user.getId());
 
+            AppLogger.info("Successful login. userId=" + user.getId());
             return "dashboard";
         }
 
+        AppLogger.warn("Failed login attempt for email=" + email);
         model.addAttribute("error", "Invalid email or password.");
         return "login";
     }

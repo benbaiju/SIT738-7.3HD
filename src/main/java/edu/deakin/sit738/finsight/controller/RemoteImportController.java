@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.deakin.sit738.finsight.entity.BankTransaction;
 import edu.deakin.sit738.finsight.service.BankTransactionService;
+import edu.deakin.sit738.finsight.util.AppLogger;
 
 @Controller
 public class RemoteImportController {
@@ -71,9 +72,10 @@ public class RemoteImportController {
 
         } catch (Exception e) {
 
+            AppLogger.error("Remote import fetch failed. userId=" + userId, e);
             model.addAttribute(
                     "error",
-                    "Error fetching URL: " + e.getMessage()
+                    "Unable to fetch the remote file. Please try again."
             );
 
         }
@@ -100,9 +102,10 @@ public class RemoteImportController {
 
         } catch (Exception e) {
 
+            AppLogger.error("Remote import save failed. userId=" + userId, e);
             model.addAttribute(
                     "error",
-                    "Error importing transactions: " + e.getMessage()
+                    "Unable to import transactions. Please try again."
             );
 
         }

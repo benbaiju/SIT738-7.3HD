@@ -28,6 +28,7 @@ import edu.deakin.sit738.finsight.entity.BankTransaction;
 import edu.deakin.sit738.finsight.entity.UploadedFile;
 import edu.deakin.sit738.finsight.service.BankTransactionService;
 import edu.deakin.sit738.finsight.service.UploadedFileService;
+import edu.deakin.sit738.finsight.util.AppLogger;
 
 @Controller
 public class FileUploadController {
@@ -84,6 +85,8 @@ public class FileUploadController {
 
         String validationError = validateUpload(file);
         if (validationError != null) {
+            AppLogger.warn("Upload validation failed. userId=" + userId
+                    + " reason=" + validationError);
             model.addAttribute("error", validationError);
             return "upload";
         }
@@ -110,6 +113,8 @@ public class FileUploadController {
 
             if (!isSafeCsvContent(destination)) {
                 destination.delete();
+                AppLogger.warn("Upload content validation failed. userId="
+                        + userId);
                 model.addAttribute("error",
                         "The file content is not a valid CSV statement.");
                 return "upload";
@@ -127,6 +132,8 @@ public class FileUploadController {
 
             importTransactions(destination, userId);
 
+            AppLogger.info("File uploaded successfully. userId=" + userId
+                    + " storedFileName=" + storedFileName);
             model.addAttribute("message",
                     "File uploaded and transactions imported successfully.");
 
@@ -134,6 +141,8 @@ public class FileUploadController {
             if (destination.exists()) {
                 destination.delete();
             }
+            AppLogger.error("Upload processing failed. userId=" + userId
+                    + " " + AppLogger.requestContext(request), e);
             model.addAttribute("error",
                     "The file could not be processed. Please upload a valid CSV statement.");
         }

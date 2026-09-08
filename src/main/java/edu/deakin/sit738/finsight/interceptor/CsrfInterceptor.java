@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import edu.deakin.sit738.finsight.util.AppLogger;
 import edu.deakin.sit738.finsight.util.CsrfTokenUtil;
 
 public class CsrfInterceptor implements HandlerInterceptor {
@@ -36,12 +37,16 @@ public class CsrfInterceptor implements HandlerInterceptor {
 
         if (session == null
                 || session.getAttribute("loggedInUser") == null) {
+            AppLogger.warn("Unauthorized POST blocked. "
+                    + AppLogger.requestContext(request));
             response.sendRedirect(
                     request.getContextPath() + "/login");
             return false;
         }
 
         if (!isValidReferer(request)) {
+            AppLogger.warn("Invalid Referer blocked. "
+                    + AppLogger.requestContext(request));
             response.sendError(
                     HttpServletResponse.SC_FORBIDDEN,
                     "Invalid or missing Referer header.");
@@ -52,6 +57,8 @@ public class CsrfInterceptor implements HandlerInterceptor {
                 request.getParameter(CsrfTokenUtil.REQUEST_PARAMETER);
 
         if (!CsrfTokenUtil.isValid(session, submittedToken)) {
+            AppLogger.warn("Invalid CSRF token blocked. "
+                    + AppLogger.requestContext(request));
             response.sendError(
                     HttpServletResponse.SC_FORBIDDEN,
                     "Invalid or missing CSRF token.");
