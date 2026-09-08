@@ -34,6 +34,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/error.jsp",
                         "/error")
                 .permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/advisor/**").hasRole("ADVISOR")
+                .antMatchers("/my-advisor/**").hasRole("USER")
+                .antMatchers(
+                        "/dashboard",
+                        "/expenses/**",
+                        "/financial-insights",
+                        "/investments/**",
+                        "/loans/**",
+                        "/goals/**",
+                        "/transactions/**",
+                        "/upload/**",
+                        "/remote-import/**")
+                .hasRole("USER")
                 .anyRequest().authenticated()
             .and()
             .formLogin()
@@ -45,6 +59,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=true")
                 .permitAll()
             .and()
-            .logout().disable();
+            .logout().disable()
+            .exceptionHandling()
+                .accessDeniedPage("/error.jsp");
     }
 }

@@ -60,10 +60,12 @@ public class FinSightAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Invalid credentials");
         }
 
+        String authority = UserRoles.toAuthority(user.getRole());
+
         return new UsernamePasswordAuthenticationToken(
                 user.getEmail(),
                 null,
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+                Collections.singletonList(new SimpleGrantedAuthority(authority)));
     }
 
     @Override

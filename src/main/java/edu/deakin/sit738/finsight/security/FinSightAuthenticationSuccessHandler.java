@@ -41,9 +41,20 @@ public class FinSightAuthenticationSuccessHandler
             user.setPassword(null);
             session.setAttribute(SessionAuthUtil.SESSION_USER_ATTRIBUTE, user);
             CsrfTokenUtil.createToken(session);
-            AppLogger.info("Successful login. userId=" + user.getId());
+            AppLogger.info("Successful login. userId=" + user.getId()
+                    + " role=" + UserRoles.normalize(user.getRole()));
         }
 
-        response.sendRedirect(request.getContextPath() + "/dashboard");
+        String redirectPath = "/dashboard";
+
+        if (user != null) {
+            if (UserRoles.isAdmin(user.getRole())) {
+                redirectPath = "/admin/users";
+            } else if (UserRoles.isAdvisor(user.getRole())) {
+                redirectPath = "/advisor/clients";
+            }
+        }
+
+        response.sendRedirect(request.getContextPath() + redirectPath);
     }
 }

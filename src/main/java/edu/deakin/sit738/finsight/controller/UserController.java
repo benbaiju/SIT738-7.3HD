@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.deakin.sit738.finsight.entity.User;
+import edu.deakin.sit738.finsight.security.UserRoles;
 import edu.deakin.sit738.finsight.service.UserService;
 import edu.deakin.sit738.finsight.util.AppLogger;
 
@@ -42,9 +43,11 @@ public class UserController {
 
         String hashedPassword = passwordEncoder.encode(password);
         User user = new User(fullName, email, hashedPassword);
+        user.setRole(UserRoles.USER);
+        user.setAdvisorId(null);
         userService.save(user);
 
-        AppLogger.info("New user registered with hashed password.");
+        AppLogger.info("New user registered with role USER.");
         model.addAttribute("message", "Registration successful. Please login.");
         return "login";
     }

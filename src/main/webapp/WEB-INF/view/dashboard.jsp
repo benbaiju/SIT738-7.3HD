@@ -378,6 +378,10 @@
                 Upload Statement
             </a>
 
+            <a href="${pageContext.request.contextPath}/my-advisor">
+                My Advisor
+            </a>
+
             <form class="logout-form"
                   action="${pageContext.request.contextPath}/logout"
                   method="post">

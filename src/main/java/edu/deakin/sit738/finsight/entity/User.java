@@ -21,6 +21,11 @@ public class User {
     @Column(length = 255)
     private String password;
 
+    @Column(nullable = false, length = 20)
+    private String role = "USER";
+
+    private Integer advisorId;
+
     public User() {
     }
 
@@ -28,6 +33,7 @@ public class User {
         this.fullName = fullName;
         this.email = email;
         this.password = password;
+        this.role = "USER";
     }
 
     public int getId() {
@@ -60,5 +66,21 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Integer getAdvisorId() {
+        return advisorId;
+    }
+
+    public void setAdvisorId(Integer advisorId) {
+        this.advisorId = advisorId;
     }
 }
