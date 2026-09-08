@@ -81,6 +81,9 @@
                   action="${pageContext.request.contextPath}/logout"
                   method="post">
                 <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
+                <input type="hidden"
+                       name="${springCsrfParameterName}"
+                       value="${springCsrfToken}">
                 <button class="logout" type="submit">Logout</button>
             </form>
         </nav>
