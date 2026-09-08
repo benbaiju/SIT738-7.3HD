@@ -1,8 +1,7 @@
 package edu.deakin.sit738.finsight.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import edu.deakin.sit738.finsight.entity.User;
 import edu.deakin.sit738.finsight.service.UserService;
 import edu.deakin.sit738.finsight.util.AppLogger;
-import edu.deakin.sit738.finsight.util.CsrfTokenUtil;
 
 @Controller
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/register")
     public String showRegisterPage() {
@@ -39,39 +40,25 @@ public class UserController {
             return "register";
         }
 
-        User user = new User(fullName, email, password);
+        String hashedPassword = passwordEncoder.encode(password);
+        User user = new User(fullName, email, hashedPassword);
         userService.save(user);
 
+        AppLogger.info("New user registered with hashed password.");
         model.addAttribute("message", "Registration successful. Please login.");
         return "login";
     }
 
     @GetMapping("/login")
-    public String showLoginPage() {
-        return "login";
-    }
+    public String showLoginPage(
+            @RequestParam(value = "error", required = false) String error,
+            Model model) {
 
-    @PostMapping("/login")
-    public String loginUser(
-            @RequestParam("email") String email,
-            @RequestParam("password") String password,
-            Model model,
-            HttpSession session) {
-
-        User user = userService.findByEmail(email);
-
-        if (user != null && user.getPassword().equals(password)) {
-
-
-            session.setAttribute("loggedInUser", user);
-            CsrfTokenUtil.createToken(session);
-
-            AppLogger.info("Successful login. userId=" + user.getId());
-            return "redirect:/dashboard";
+        if (error != null) {
+            AppLogger.warn("Failed login attempt.");
+            model.addAttribute("error", "Invalid email or password.");
         }
 
-        AppLogger.warn("Failed login attempt for email=" + email);
-        model.addAttribute("error", "Invalid email or password.");
         return "login";
     }
 }

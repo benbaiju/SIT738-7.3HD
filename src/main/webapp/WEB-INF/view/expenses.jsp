@@ -81,13 +81,26 @@
             color: white;
         }
 
-        .nav a.logout {
+        .nav form.logout-form {
             margin-top: 25px;
+        }
+
+        .nav form.logout-form button.logout {
+            display: block;
+            width: 100%;
+            text-align: left;
+            border: none;
+            border-radius: 8px;
+            padding: 13px 12px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
             background: #7f1d1d;
             color: white;
         }
 
-        .nav a.logout:hover {
+        .nav form.logout-form button.logout:hover {
             background: #991b1b;
         }
 
@@ -334,10 +347,14 @@
                 Upload Statement
             </a>
 
-            <a class="logout"
-               href="${pageContext.request.contextPath}/logout">
-                Logout
-            </a>
+            <form class="logout-form"
+                  action="${pageContext.request.contextPath}/logout"
+                  method="post">
+                <input type="hidden"
+                       name="csrfToken"
+                       value="${sessionScope.csrfToken}">
+                <button class="logout" type="submit">Logout</button>
+            </form>
 
         </nav>
 
