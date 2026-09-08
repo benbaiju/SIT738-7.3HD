@@ -526,12 +526,11 @@
                             <input type="url"
                                    id="url"
                                    name="url"
-                                   placeholder="http://localhost:9000/transactions.csv"
+                                   placeholder="https://example.com/transactions.csv"
                                    required>
 
                             <div class="hint">
-                                Example:
-                                http://localhost:9000/transactions.csv
+                                Only HTTPS URLs are allowed. Local and private network addresses are blocked.
                             </div>
 
                         </div>
