@@ -1,14 +1,18 @@
 <%@ page import="java.util.List" %>
 <%@ page import="edu.deakin.sit738.finsight.entity.Expense" %>
+<%@ page import="org.springframework.validation.ObjectError" %>
+<%@ page import="org.springframework.web.util.HtmlUtils" %>
 
 <%
     List<Expense> expenses = (List<Expense>) request.getAttribute("expenses");
+    List<ObjectError> validationErrors =
+            (List<ObjectError>) request.getAttribute("validationErrors");
 
     double totalExpenses = 0;
 
     if (expenses != null) {
-        for (Expense expense : expenses) {
-            totalExpenses += expense.getAmount();
+        for (Expense expenseRecord : expenses) {
+            totalExpenses += expenseRecord.getAmount();
         }
     }
 %>
@@ -230,6 +234,20 @@
             padding: 30px;
         }
 
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .error ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
         @media (max-width: 900px) {
             .grid {
                 grid-template-columns: 1fr;
@@ -346,18 +364,36 @@
 
                 <h2>Add Expense</h2>
 
-                <form action="${pageContext.request.contextPath}/expenses/add"
-                      method="post">
+                <% if (validationErrors != null && !validationErrors.isEmpty()) { %>
+                    <div class="error">
+                        <ul>
+                            <% for (ObjectError error : validationErrors) { %>
+                                <li><%= HtmlUtils.htmlEscape(error.getDefaultMessage()) %></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                <% } %>
+
+                <form id="addExpenseForm"
+                      action="${pageContext.request.contextPath}/expenses/add"
+                      method="post"
+                      onsubmit="return validateExpenseForm();">
 
                     <input type="hidden"
                            name="userId"
                            value="${userId}">
 
-                    <label class="label">Description</label>
-                    <input type="text" name="description" required>
+                    <label class="label" for="description">Description</label>
+                    <input type="text"
+                           id="description"
+                           name="description"
+                           maxlength="100"
+                           pattern="[A-Za-z0-9\s.,'\-]{1,100}"
+                           title="Letters, numbers, spaces, and . , ' - only"
+                           required>
 
-                    <label class="label">Category</label>
-                    <select name="category" required>
+                    <label class="label" for="category">Category</label>
+                    <select id="category" name="category" required>
                         <option value="">Select category</option>
                         <option value="Housing">Housing</option>
                         <option value="Food">Food</option>
@@ -366,11 +402,12 @@
                         <option value="Other">Other</option>
                     </select>
 
-                    <label class="label">Amount</label>
+                    <label class="label" for="amount">Amount</label>
                     <input type="number"
+                           id="amount"
                            name="amount"
                            step="0.01"
-                           min="0"
+                           min="0.01"
                            required>
 
                     <button type="submit">Add Expense</button>
@@ -421,16 +458,30 @@
 
                         <% if (expenses != null && !expenses.isEmpty()) {
 
-                            for (Expense expense : expenses) { %>
+                            for (Expense expenseRecord : expenses) {
+
+                                String safeDescription = expenseRecord.getDescription() == null
+                                        ? ""
+                                        : HtmlUtils.htmlEscape(expenseRecord.getDescription());
+
+                                String safeCategory = expenseRecord.getCategory() == null
+                                        ? ""
+                                        : HtmlUtils.htmlEscape(expenseRecord.getCategory());
+                        %>
 
                             <tr>
 
-                                <td><%= expense.getDescription() %></td>
+                                <%-- SECURE OUTPUT: HTML-escaped user-controlled fields.
+                                     Previous vulnerable output (retained for comparison):
+                                     <td><%= expense.getDescription() %></td>
+                                     <td><%= expense.getCategory() %></td>
+                                --%>
+                                <td><%= safeDescription %></td>
 
-                                <td><%= expense.getCategory() %></td>
+                                <td><%= safeCategory %></td>
 
                                 <td>
-                                    $<%= String.format("%.2f", expense.getAmount()) %>
+                                    $<%= String.format("%.2f", expenseRecord.getAmount()) %>
                                 </td>
 
                                 <td>
@@ -440,7 +491,7 @@
 
                                         <input type="hidden"
                                                name="id"
-                                               value="<%= expense.getId() %>">
+                                               value="<%= expenseRecord.getId() %>">
 
                                         <input type="hidden"
                                                name="userId"
@@ -481,6 +532,33 @@
     </main>
 
 </div>
+
+<script>
+    function validateExpenseForm() {
+        var description = document.getElementById("description").value.trim();
+        var category = document.getElementById("category").value;
+        var amount = parseFloat(document.getElementById("amount").value);
+        var descriptionPattern = /^[A-Za-z0-9\s.,'\-]{1,100}$/;
+        var allowedCategories = ["Housing", "Food", "Transport", "Loans", "Other"];
+
+        if (!descriptionPattern.test(description)) {
+            alert("Invalid description. Use letters, numbers, spaces, and . , ' - only (max 100 characters).");
+            return false;
+        }
+
+        if (allowedCategories.indexOf(category) === -1) {
+            alert("Please select a valid category.");
+            return false;
+        }
+
+        if (isNaN(amount) || amount < 0.01) {
+            alert("Amount must be greater than 0.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
 
 </body>
 </html>

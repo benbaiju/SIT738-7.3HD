@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "expenses")
@@ -19,8 +23,25 @@ public class Expense {
     private int id;
 
     private int userId;
+
+    @NotBlank(message = "Description is required")
+    @Size(min = 1, max = 100,
+            message = "Description must be between 1 and 100 characters")
+    @Pattern(
+            regexp = "^[a-zA-Z0-9\\s.,'\\-]+$",
+            message = "Description contains invalid characters"
+    )
     private String description;
+
+    @NotBlank(message = "Category is required")
+    @Pattern(
+            regexp = "^(Housing|Food|Transport|Loans|Other)$",
+            message = "Category must be one of: Housing, Food, Transport, Loans, Other"
+    )
     private String category;
+
+    // Primitive double cannot use @NotNull meaningfully; enforce a positive amount.
+    @DecimalMin(value = "0.01", message = "Amount must be greater than 0")
     private double amount;
 
     @Temporal(TemporalType.DATE)

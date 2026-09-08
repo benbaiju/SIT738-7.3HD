@@ -3,11 +3,14 @@ package edu.deakin.sit738.finsight.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,12 +34,53 @@ public class ExpenseController {
 
         model.addAttribute("userId", userId);
         model.addAttribute("expenses", expenses);
+        model.addAttribute("expense", new Expense());
 
         return "expenses";
     }
 
+    /**
+     * Secure add expense endpoint (default).
+     * Uses Bean Validation (@Valid) before persisting user input.
+     */
     @PostMapping("/expenses/add")
     public String addExpense(
+            @Valid @ModelAttribute("expense") Expense expense,
+            BindingResult bindingResult,
+            HttpSession session,
+            Model model) {
+
+        User loggedInUser =
+                (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        int userId = loggedInUser.getId();
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("userId", userId);
+            model.addAttribute("expenses",
+                    expenseService.getExpensesByUserId(userId));
+            model.addAttribute("validationErrors",
+                    bindingResult.getAllErrors());
+            return "expenses";
+        }
+
+        expense.setUserId(userId);
+        expenseService.saveExpense(expense);
+
+        return "redirect:/expenses?userId=" + userId;
+    }
+
+    /**
+     * VULNERABLE (intentionally retained for SAST/DAST comparison):
+     * Accepts and stores raw user input with no Bean Validation.
+     * Do not expose this endpoint from the normal expenses UI.
+     */
+    @PostMapping("/expenses/add-vulnerable")
+    public String addExpenseVulnerable(
             @RequestParam("description") String description,
             @RequestParam("category") String category,
             @RequestParam("amount") double amount,
@@ -83,6 +127,7 @@ public class ExpenseController {
 
         model.addAttribute("userId", userId);
         model.addAttribute("expenses", expenses);
+        model.addAttribute("expense", new Expense());
 
         return "expenses";
     }
