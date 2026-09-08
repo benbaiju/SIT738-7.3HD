@@ -67,8 +67,8 @@ public class ExpenseService {
     }
 
     @Transactional(readOnly = true)
-    public List<Expense> searchByDescription(String description) {
-        return expenseDAO.searchByDescription(description);
+    public List<Expense> searchByDescription(int userId, String description) {
+        return expenseDAO.searchByDescription(userId, description);
     }
 
     @Transactional

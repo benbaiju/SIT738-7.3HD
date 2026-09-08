@@ -10,7 +10,7 @@ public interface ExpenseDAO {
 
     List<Expense> findByUserId(int userId);
 
-    List<Expense> searchByDescription(String description);
+    List<Expense> searchByDescription(int userId, String description);
 
     void delete(int id);
 }

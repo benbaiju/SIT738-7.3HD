@@ -33,12 +33,17 @@ public class ExpenseDAOImpl implements ExpenseDAO {
     }
 
     @Override
-    public List<Expense> searchByDescription(String description) {
+    @SuppressWarnings("unchecked")
+    public List<Expense> searchByDescription(int userId, String description) {
         Session session = sessionFactory.getCurrentSession();
 
-        String hql = "from Expense where description = '" + description + "'";
+        String hql = "from Expense where userId = :userId "
+                + "and description = :description";
 
-        return session.createQuery(hql).list();
+        return session.createQuery(hql)
+                .setParameter("userId", userId)
+                .setParameter("description", description)
+                .list();
     }
 
     @Override

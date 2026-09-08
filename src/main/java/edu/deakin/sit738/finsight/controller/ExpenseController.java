@@ -118,12 +118,21 @@ public class ExpenseController {
 
     @PostMapping("/expenses/search")
     public String searchExpenses(
-            @RequestParam("userId") int userId,
             @RequestParam("description") String description,
+            HttpSession session,
             Model model) {
 
+        User loggedInUser =
+                (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        int userId = loggedInUser.getId();
+
         List<Expense> expenses =
-                expenseService.searchByDescription(description);
+                expenseService.searchByDescription(userId, description);
 
         model.addAttribute("userId", userId);
         model.addAttribute("expenses", expenses);
