@@ -53,9 +53,6 @@
             <a class="active" href="${pageContext.request.contextPath}/advisor/clients">My Clients</a>
             <form class="logout-form" action="${pageContext.request.contextPath}/logout" method="post">
                 <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
-                <input type="hidden"
-                       name="${springCsrfParameterName}"
-                       value="${springCsrfToken}">
                 <button class="logout" type="submit">Logout</button>
             </form>
         </nav>
