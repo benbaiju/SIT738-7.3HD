@@ -95,10 +95,7 @@ public class RemoteImportController {
 
             AppLogger.warn("Remote import URL rejected. userId=" + userId
                     + " reason=" + e.getMessage());
-            model.addAttribute(
-                    "error",
-                    "The provided URL is not allowed."
-            );
+            model.addAttribute("error", e.getMessage());
 
         } catch (Exception e) {
 

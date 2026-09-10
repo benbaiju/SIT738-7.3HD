@@ -36,7 +36,7 @@ public class UserController {
 
         User existingUser = userService.findByEmail(email);
 
-        if (existingUser != null) {
+        if (existingUser != null) { 
             model.addAttribute("error", "Email is already registered.");
             return "register";
         }

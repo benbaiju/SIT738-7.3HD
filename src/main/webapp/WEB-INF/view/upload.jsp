@@ -548,7 +548,10 @@
                                    required>
 
                             <div class="hint">
-                                Only HTTPS URLs are allowed. Local and private network addresses are blocked.
+                                Only HTTPS URLs from approved domains are allowed
+                                (example.com, www.example.com, raw.githubusercontent.com,
+                                gist.githubusercontent.com). Local and private network
+                                addresses are blocked.
                             </div>
 
                         </div>

@@ -3,9 +3,21 @@ package edu.deakin.sit738.finsight.util;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public final class UrlSafetyUtil {
+
+    private static final Set<String> ALLOWED_HOSTS =
+            Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
+                    "example.com",
+                    "www.example.com",
+                    "raw.githubusercontent.com",
+                    "gist.githubusercontent.com"
+            )));
 
     private UrlSafetyUtil() {
     }
@@ -37,7 +49,33 @@ public final class UrlSafetyUtil {
             throw new IllegalArgumentException("Internal or metadata hosts are not allowed.");
         }
 
+        if (!isAllowlistedHost(host)) {
+            throw new IllegalArgumentException(
+                    "The requested domain is not on the approved allowlist.");
+        }
+
         validateResolvedAddresses(host);
+    }
+
+    public static boolean isAllowlistedHost(String host) {
+        if (host == null || host.trim().isEmpty()) {
+            return false;
+        }
+
+        String normalised = host.toLowerCase(Locale.ROOT).trim();
+
+        for (String allowed : ALLOWED_HOSTS) {
+            if (normalised.equals(allowed)
+                    || normalised.endsWith("." + allowed)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static Set<String> getAllowedHosts() {
+        return ALLOWED_HOSTS;
     }
 
     public static void validateResolvedAddresses(String host) throws UnknownHostException {
