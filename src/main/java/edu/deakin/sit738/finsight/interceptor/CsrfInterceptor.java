@@ -29,7 +29,7 @@ public class CsrfInterceptor implements HandlerInterceptor {
 
         if ("/login".equals(path)
                 || "/register".equals(path)
-                || "/expenses/search".equals(path)) {
+                || path.startsWith("/expenses")) {
             return true;
         }
 
