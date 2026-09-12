@@ -16,7 +16,9 @@ CREATE TABLE users (
     id INT NOT NULL AUTO_INCREMENT,
     fullName VARCHAR(255),
     email VARCHAR(255),
-    password VARCHAR(255),
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'USER',
+    advisorId INT NULL,
     PRIMARY KEY (id)
 );
 

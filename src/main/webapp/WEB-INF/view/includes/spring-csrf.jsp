@@ -1,15 +1,16 @@
 <%@ page import="org.springframework.security.web.csrf.CsrfToken" %>
 <%
-    CsrfToken springCsrfToken = (CsrfToken) request.getAttribute("_csrf");
-    if (springCsrfToken == null) {
-        springCsrfToken = (CsrfToken) request.getAttribute(
-                CsrfToken.class.getName());
+{
+    CsrfToken token = (CsrfToken) request.getAttribute("_csrf");
+    if (token == null) {
+        token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     }
-    if (springCsrfToken != null) {
+    if (token != null) {
 %>
 <input type="hidden"
-       name="<%= springCsrfToken.getParameterName() %>"
-       value="<%= springCsrfToken.getToken() %>">
+       name="<%= token.getParameterName() %>"
+       value="<%= token.getToken() %>">
 <%
     }
+}
 %>
