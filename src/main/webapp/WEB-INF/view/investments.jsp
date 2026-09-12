@@ -78,6 +78,7 @@
             <form class="logout-form"
                   action="${pageContext.request.contextPath}/logout"
                   method="post">
+                <%@ include file="includes/spring-csrf.jsp" %>
                 <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                 <button class="logout" type="submit">Logout</button>
             </form>
@@ -97,6 +98,7 @@
             <div class="card">
                 <h2>Add Investment</h2>
                 <form action="${pageContext.request.contextPath}/investments/add" method="post">
+                    <%@ include file="includes/spring-csrf.jsp" %>
                     <input type="hidden"
                            name="csrfToken"
                            value="${sessionScope.csrfToken}">
@@ -165,6 +167,7 @@
                                 <td>$<%= String.format("%.2f", investment.getCurrentValue()) %></td>
                                 <td>
                                     <form action="${pageContext.request.contextPath}/investments/delete" method="post">
+                                        <%@ include file="includes/spring-csrf.jsp" %>
                                         <input type="hidden"
                                                name="csrfToken"
                                                value="${sessionScope.csrfToken}">

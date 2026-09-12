@@ -44,6 +44,7 @@
         <nav class="nav">
             <a class="active" href="${pageContext.request.contextPath}/admin/users">Manage users</a>
             <form class="logout-form" action="${pageContext.request.contextPath}/logout" method="post">
+                <%@ include file="includes/spring-csrf.jsp" %>
                 <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                 <button class="logout" type="submit">Logout</button>
             </form>
@@ -77,6 +78,7 @@
                             <form class="inline"
                                   action="${pageContext.request.contextPath}/admin/users/role"
                                   method="post">
+                                <%@ include file="includes/spring-csrf.jsp" %>
                                 <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                                 <input type="hidden" name="userId" value="<%= user.getId() %>">
                                 <select name="role">
@@ -92,6 +94,7 @@
                                 <form class="inline"
                                       action="${pageContext.request.contextPath}/admin/users/assign-advisor"
                                       method="post">
+                                    <%@ include file="includes/spring-csrf.jsp" %>
                                     <input type="hidden" name="csrfToken" value="${sessionScope.csrfToken}">
                                     <input type="hidden" name="userId" value="<%= user.getId() %>">
                                     <select name="advisorId">

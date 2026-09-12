@@ -136,7 +136,7 @@
         <% } %>
 
         <form action="${pageContext.request.contextPath}/register" method="post">
-
+            <%@ include file="includes/spring-csrf.jsp" %>
             <label class="label" for="fullName">Full name</label>
             <input type="text" id="fullName" name="fullName" required>
 

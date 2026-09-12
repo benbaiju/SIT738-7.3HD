@@ -151,7 +151,7 @@
         <% } %>
 
         <form action="${pageContext.request.contextPath}/login" method="post">
-
+            <%@ include file="includes/spring-csrf.jsp" %>
             <label class="label" for="email">Email</label>
             <input type="email" id="email" name="email" required>
 

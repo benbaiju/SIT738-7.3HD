@@ -2,7 +2,6 @@
 <%@ page import="edu.deakin.sit738.finsight.entity.Expense" %>
 <%@ page import="org.springframework.validation.ObjectError" %>
 <%@ page import="org.springframework.web.util.HtmlUtils" %>
-<%@ page import="org.springframework.security.web.csrf.CsrfToken" %>
 
 <%
     List<Expense> expenses = (List<Expense>) request.getAttribute("expenses");
@@ -15,13 +14,6 @@
         for (Expense expenseRecord : expenses) {
             totalExpenses += expenseRecord.getAmount();
         }
-    }
-
-    CsrfToken springCsrf =
-            (CsrfToken) request.getAttribute("_csrf");
-    if (springCsrf == null) {
-        springCsrf = (CsrfToken) request.getAttribute(
-                CsrfToken.class.getName());
     }
 %>
 
@@ -362,6 +354,7 @@
             <form class="logout-form"
                   action="${pageContext.request.contextPath}/logout"
                   method="post">
+                <%@ include file="includes/spring-csrf.jsp" %>
                 <input type="hidden"
                        name="csrfToken"
                        value="${sessionScope.csrfToken}">
@@ -408,11 +401,7 @@
                       method="post"
                       onsubmit="return validateExpenseForm();">
 
-                    <% if (springCsrf != null) { %>
-                        <input type="hidden"
-                               name="<%= springCsrf.getParameterName() %>"
-                               value="<%= springCsrf.getToken() %>">
-                    <% } %>
+                    <%@ include file="includes/spring-csrf.jsp" %>
 
                     <input type="hidden"
                            name="userId"
@@ -459,11 +448,7 @@
                       action="${pageContext.request.contextPath}/expenses/search"
                       method="post">
 
-                    <% if (springCsrf != null) { %>
-                        <input type="hidden"
-                               name="<%= springCsrf.getParameterName() %>"
-                               value="<%= springCsrf.getToken() %>">
-                    <% } %>
+                    <%@ include file="includes/spring-csrf.jsp" %>
 
                     <input type="hidden"
                            name="userId"
@@ -525,11 +510,7 @@
                                     <form action="${pageContext.request.contextPath}/expenses/delete"
                                           method="post">
 
-                                        <% if (springCsrf != null) { %>
-                                            <input type="hidden"
-                                                   name="<%= springCsrf.getParameterName() %>"
-                                                   value="<%= springCsrf.getToken() %>">
-                                        <% } %>
+                                        <%@ include file="includes/spring-csrf.jsp" %>
 
                                         <input type="hidden"
                                                name="id"

@@ -338,6 +338,7 @@
             <form class="logout-form"
                   action="${pageContext.request.contextPath}/logout"
                   method="post">
+                <%@ include file="includes/spring-csrf.jsp" %>
                 <input type="hidden"
                        name="csrfToken"
                        value="${sessionScope.csrfToken}">
@@ -363,7 +364,7 @@
                 <h2>Add Financial Goal</h2>
 
                 <form action="${pageContext.request.contextPath}/goals/add" method="post">
-
+                    <%@ include file="includes/spring-csrf.jsp" %>
                     <input type="hidden"
                            name="csrfToken"
                            value="${sessionScope.csrfToken}">
@@ -455,7 +456,7 @@
 
                             <td>
                                 <form action="${pageContext.request.contextPath}/goals/delete" method="post">
-
+                                    <%@ include file="includes/spring-csrf.jsp" %>
                                     <input type="hidden"
                                            name="csrfToken"
                                            value="${sessionScope.csrfToken}">

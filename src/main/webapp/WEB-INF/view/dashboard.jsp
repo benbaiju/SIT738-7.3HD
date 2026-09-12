@@ -385,6 +385,7 @@
             <form class="logout-form"
                   action="${pageContext.request.contextPath}/logout"
                   method="post">
+                <%@ include file="includes/spring-csrf.jsp" %>
                 <input type="hidden"
                        name="csrfToken"
                        value="${sessionScope.csrfToken}">
